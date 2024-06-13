@@ -6,6 +6,34 @@
   * devDependencies
     * fsx-types bumped from ^0.0.2 to ^0.0.3
 
+## [0.18.2](https://github.com/humanwhocodes/humanfs/compare/core-v0.18.1...core-v0.18.2) (2024-06-13)
+
+
+### Bug Fixes
+
+* Hfs#walk() entry paths ([#122](https://github.com/humanwhocodes/humanfs/issues/122)) ([ab2155f](https://github.com/humanwhocodes/humanfs/commit/ab2155f5afc8ee6230d9ad2faedc93067471dbf9))
+
+## [0.18.1](https://github.com/humanwhocodes/humanfs/compare/core-v0.18.0...core-v0.18.1) (2024-06-12)
+
+
+### Bug Fixes
+
+* Add main entry to package.json files ([1092847](https://github.com/humanwhocodes/humanfs/commit/1092847563ef1f42e9625b3a98b537694f83ea62))
+
+## [0.18.0](https://github.com/humanwhocodes/humanfs/compare/core-v0.17.0...core-v0.18.0) (2024-06-12)
+
+
+### Features
+
+* Implement Hfs#walk() method ([#119](https://github.com/humanwhocodes/humanfs/issues/119)) ([2aeade0](https://github.com/humanwhocodes/humanfs/commit/2aeade0ffbef886103dc38d16694e9b63191a8df))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @humanfs/types bumped from ^0.13.0 to ^0.14.0
+
 ## [0.17.0](https://github.com/humanwhocodes/humanfs/compare/core-v0.16.1...core-v0.17.0) (2024-03-20)
 
 

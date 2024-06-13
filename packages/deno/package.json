@@ -1,8 +1,9 @@
 {
   "name": "@humanfs/deno",
-  "version": "0.16.0",
+  "version": "0.16.2",
   "description": "The Deno bindings of the humanfs library.",
   "type": "module",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
     "import": {
@@ -47,6 +48,6 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "@humanwhocodes/retry": "^0.1.2"
+    "@humanwhocodes/retry": "^0.3.0"
   }
 }
