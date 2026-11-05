@@ -1,8 +1,9 @@
 {
   "name": "@humanfs/core",
-  "version": "0.17.0",
+  "version": "0.20.0",
   "description": "The core of the humanfs library.",
   "type": "module",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
     "import": {
@@ -40,12 +41,14 @@
   },
   "homepage": "https://github.com/humanwhocodes/humanfs#readme",
   "engines": {
-    "node": ">=18.18.0"
+    "node": ">=24.0.0"
   },
   "devDependencies": {
-    "@humanfs/types": "^0.13.0",
     "c8": "^9.0.0",
     "mocha": "^10.2.0",
     "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@humanfs/types": "^0.16.0"
   }
 }

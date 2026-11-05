@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.16.0](https://github.com/humanwhocodes/humanfs/compare/types-v0.15.0...types-v0.16.0) (2026-09-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* Require Node.js v24+ and replace WebdriverIO with Vitest ([#168](https://github.com/humanwhocodes/humanfs/issues/168))
+
+### Features
+
+* Require Node.js v24+ and replace WebdriverIO with Vitest ([#168](https://github.com/humanwhocodes/humanfs/issues/168)) ([9d41384](https://github.com/humanwhocodes/humanfs/commit/9d41384c8908b3e416c216061ba4608f907d2d03))
+
+## [0.15.0](https://github.com/humanwhocodes/humanfs/compare/types-v0.14.0...types-v0.15.0) (2024-09-09)
+
+
+### Features
+
+* Add depth to HfsWalkEntry ([#130](https://github.com/humanwhocodes/humanfs/issues/130)) ([a633452](https://github.com/humanwhocodes/humanfs/commit/a63345260562b798e73c2ea63612e6fe95ac400d))
+
+## [0.14.0](https://github.com/humanwhocodes/humanfs/compare/types-v0.13.0...types-v0.14.0) (2024-06-12)
+
+
+### Features
+
+* Implement Hfs#walk() method ([#119](https://github.com/humanwhocodes/humanfs/issues/119)) ([2aeade0](https://github.com/humanwhocodes/humanfs/commit/2aeade0ffbef886103dc38d16694e9b63191a8df))
+
 ## [0.13.0](https://github.com/humanwhocodes/humanfs/compare/types-v0.12.0...types-v0.13.0) (2024-03-20)
 
 

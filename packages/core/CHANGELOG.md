@@ -6,6 +6,86 @@
   * devDependencies
     * fsx-types bumped from ^0.0.2 to ^0.0.3
 
+## [0.20.0](https://github.com/humanwhocodes/humanfs/compare/core-v0.19.2...core-v0.20.0) (2026-09-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* Require Node.js v24+ and replace WebdriverIO with Vitest ([#168](https://github.com/humanwhocodes/humanfs/issues/168))
+
+### Features
+
+* Add followSymlinks option to walk() ([#165](https://github.com/humanwhocodes/humanfs/issues/165)) ([6e0134c](https://github.com/humanwhocodes/humanfs/commit/6e0134ced583d423c0d87ace8fb87c378f9736b1))
+* Require Node.js v24+ and replace WebdriverIO with Vitest ([#168](https://github.com/humanwhocodes/humanfs/issues/168)) ([9d41384](https://github.com/humanwhocodes/humanfs/commit/9d41384c8908b3e416c216061ba4608f907d2d03))
+
+
+### Bug Fixes
+
+* Ensure walk() skips directories deleted before they are listed ([#166](https://github.com/humanwhocodes/humanfs/issues/166)) ([8125278](https://github.com/humanwhocodes/humanfs/commit/812527856a99f0a6777c5db0ab081b4f75b8a644))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @humanfs/types bumped from ^0.15.0 to ^0.16.0
+
+## [0.19.2](https://github.com/humanwhocodes/humanfs/compare/core-v0.19.1...core-v0.19.2) (2026-04-17)
+
+
+### Bug Fixes
+
+* Include type dependencies at runtime ([956ce7a](https://github.com/humanwhocodes/humanfs/commit/956ce7aac2a998d0af23b7cb08e7630b69693138)), closes [#145](https://github.com/humanwhocodes/humanfs/issues/145)
+
+## [0.19.1](https://github.com/humanwhocodes/humanfs/compare/core-v0.19.0...core-v0.19.1) (2024-10-18)
+
+
+### Bug Fixes
+
+* Ensure walk() doesn't error out on directory ENOENT ([#135](https://github.com/humanwhocodes/humanfs/issues/135)) ([05873f8](https://github.com/humanwhocodes/humanfs/commit/05873f8f5dc38a675c3bf13091906bb56bffffc6))
+
+## [0.19.0](https://github.com/humanwhocodes/humanfs/compare/core-v0.18.2...core-v0.19.0) (2024-09-09)
+
+
+### Features
+
+* Add depth to HfsWalkEntry ([#130](https://github.com/humanwhocodes/humanfs/issues/130)) ([a633452](https://github.com/humanwhocodes/humanfs/commit/a63345260562b798e73c2ea63612e6fe95ac400d))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @humanfs/types bumped from ^0.14.0 to ^0.15.0
+
+## [0.18.2](https://github.com/humanwhocodes/humanfs/compare/core-v0.18.1...core-v0.18.2) (2024-06-13)
+
+
+### Bug Fixes
+
+* Hfs#walk() entry paths ([#122](https://github.com/humanwhocodes/humanfs/issues/122)) ([ab2155f](https://github.com/humanwhocodes/humanfs/commit/ab2155f5afc8ee6230d9ad2faedc93067471dbf9))
+
+## [0.18.1](https://github.com/humanwhocodes/humanfs/compare/core-v0.18.0...core-v0.18.1) (2024-06-12)
+
+
+### Bug Fixes
+
+* Add main entry to package.json files ([1092847](https://github.com/humanwhocodes/humanfs/commit/1092847563ef1f42e9625b3a98b537694f83ea62))
+
+## [0.18.0](https://github.com/humanwhocodes/humanfs/compare/core-v0.17.0...core-v0.18.0) (2024-06-12)
+
+
+### Features
+
+* Implement Hfs#walk() method ([#119](https://github.com/humanwhocodes/humanfs/issues/119)) ([2aeade0](https://github.com/humanwhocodes/humanfs/commit/2aeade0ffbef886103dc38d16694e9b63191a8df))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @humanfs/types bumped from ^0.13.0 to ^0.14.0
+
 ## [0.17.0](https://github.com/humanwhocodes/humanfs/compare/core-v0.16.1...core-v0.17.0) (2024-03-20)
 
 

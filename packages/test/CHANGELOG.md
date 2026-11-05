@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.16.0](https://github.com/humanwhocodes/humanfs/compare/test-v0.15.0...test-v0.16.0) (2026-09-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* Require Node.js v24+ and replace WebdriverIO with Vitest ([#168](https://github.com/humanwhocodes/humanfs/issues/168))
+
+### Features
+
+* Require Node.js v24+ and replace WebdriverIO with Vitest ([#168](https://github.com/humanwhocodes/humanfs/issues/168)) ([9d41384](https://github.com/humanwhocodes/humanfs/commit/9d41384c8908b3e416c216061ba4608f907d2d03))
+
+## [0.15.0](https://github.com/humanwhocodes/humanfs/compare/test-v0.14.1...test-v0.15.0) (2024-07-24)
+
+
+### Features
+
+* Add Box package ([#125](https://github.com/humanwhocodes/humanfs/issues/125)) ([6da89d1](https://github.com/humanwhocodes/humanfs/commit/6da89d17933cd097d9780690af082377d5533faf))
+
+## [0.14.1](https://github.com/humanwhocodes/humanfs/compare/test-v0.14.0...test-v0.14.1) (2024-06-12)
+
+
+### Bug Fixes
+
+* Add main entry to package.json files ([1092847](https://github.com/humanwhocodes/humanfs/commit/1092847563ef1f42e9625b3a98b537694f83ea62))
+
 ## [0.14.0](https://github.com/humanwhocodes/humanfs/compare/test-v0.13.0...test-v0.14.0) (2024-03-20)
 
 

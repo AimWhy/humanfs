@@ -6,6 +6,125 @@
   * dependencies
     * @humanfs/core bumped from ^0.14.0 to ^0.15.0
 
+## [0.17.0](https://github.com/humanwhocodes/humanfs/compare/node-v0.16.8...node-v0.17.0) (2026-09-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* Require Node.js v24+ and replace WebdriverIO with Vitest ([#168](https://github.com/humanwhocodes/humanfs/issues/168))
+
+### Features
+
+* Add followSymlinks option to walk() ([#165](https://github.com/humanwhocodes/humanfs/issues/165)) ([6e0134c](https://github.com/humanwhocodes/humanfs/commit/6e0134ced583d423c0d87ace8fb87c378f9736b1))
+* Require Node.js v24+ and replace WebdriverIO with Vitest ([#168](https://github.com/humanwhocodes/humanfs/issues/168)) ([9d41384](https://github.com/humanwhocodes/humanfs/commit/9d41384c8908b3e416c216061ba4608f907d2d03))
+
+
+### Bug Fixes
+
+* Ensure walk() skips directories deleted before they are listed ([#166](https://github.com/humanwhocodes/humanfs/issues/166)) ([8125278](https://github.com/humanwhocodes/humanfs/commit/812527856a99f0a6777c5db0ab081b4f75b8a644))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @humanfs/core bumped from ^0.19.2 to ^0.20.0
+    * @humanfs/types bumped from ^0.15.0 to ^0.16.0
+  * devDependencies
+    * @humanfs/test bumped from ^0.15.0 to ^0.16.0
+
+## [0.16.8](https://github.com/humanwhocodes/humanfs/compare/node-v0.16.7...node-v0.16.8) (2026-04-17)
+
+
+### Bug Fixes
+
+* Ensure symlinks are copied as symlinks in `copy()` and `copyAll()` ([22bbaa44](https://github.com/humanwhocodes/humanfs/commit/22bbaa4487a3e6c1197ca619840de4615d0c3404))
+* Include type dependencies at runtime ([956ce7a](https://github.com/humanwhocodes/humanfs/commit/956ce7aac2a998d0af23b7cb08e7630b69693138)), closes [#145](https://github.com/humanwhocodes/humanfs/issues/145)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @humanfs/core bumped from ^0.19.1 to ^0.19.2
+
+## [0.16.7](https://github.com/humanwhocodes/humanfs/compare/node-v0.16.6...node-v0.16.7) (2024-11-27)
+
+
+### Bug Fixes
+
+* Add directory to package.json ([f691b60](https://github.com/humanwhocodes/humanfs/commit/f691b60a0df2ce9a5894b6af51acc2461654cf6b))
+
+## [0.16.6](https://github.com/humanwhocodes/humanfs/compare/node-v0.16.5...node-v0.16.6) (2024-10-18)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @humanfs/core bumped from ^0.19.0 to ^0.19.1
+
+## [0.16.5](https://github.com/humanwhocodes/humanfs/compare/node-v0.16.4...node-v0.16.5) (2024-09-09)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @humanfs/core bumped from ^0.18.2 to ^0.19.0
+  * devDependencies
+    * @humanfs/types bumped from ^0.14.0 to ^0.15.0
+
+## [0.16.4](https://github.com/humanwhocodes/humanfs/compare/node-v0.16.3...node-v0.16.4) (2024-07-24)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @humanfs/test bumped from ^0.14.1 to ^0.15.0
+
+## [0.16.3](https://github.com/humanwhocodes/humanfs/compare/node-v0.16.2...node-v0.16.3) (2024-06-13)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @humanfs/core bumped from ^0.18.1 to ^0.18.2
+
+## [0.16.2](https://github.com/humanwhocodes/humanfs/compare/node-v0.16.1...node-v0.16.2) (2024-06-12)
+
+
+### Bug Fixes
+
+* Add main entry to package.json files ([1092847](https://github.com/humanwhocodes/humanfs/commit/1092847563ef1f42e9625b3a98b537694f83ea62))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @humanfs/core bumped from ^0.18.0 to ^0.18.1
+  * devDependencies
+    * @humanfs/test bumped from ^0.14.0 to ^0.14.1
+
+## [0.16.1](https://github.com/humanwhocodes/humanfs/compare/node-v0.16.0...node-v0.16.1) (2024-06-12)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @humanwhocodes/retry to ^0.3.0 ([#113](https://github.com/humanwhocodes/humanfs/issues/113)) ([c6b42f5](https://github.com/humanwhocodes/humanfs/commit/c6b42f5063ef90459daa4dd1d19bcefc7d9a0e86))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @humanfs/core bumped from ^0.17.0 to ^0.18.0
+  * devDependencies
+    * @humanfs/types bumped from ^0.13.0 to ^0.14.0
+
 ## [0.16.0](https://github.com/humanwhocodes/humanfs/compare/node-v0.15.2...node-v0.16.0) (2024-03-20)
 
 

@@ -3,16 +3,15 @@
  * @author Nicholas C. Zakas
  */
 
-/*global describe, it, TextEncoder, Buffer */
-
 //------------------------------------------------------------------------------
 // Imports
 //------------------------------------------------------------------------------
 
-import { NodeHfsImpl } from "../src/node-hfs.js";
+import { NodeHfsImpl, NodeHfs } from "../src/node-hfs.js";
 import assert from "node:assert";
 import fsp from "node:fs/promises";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
+import os from "node:os";
 import path from "node:path";
 import { HfsImplTester } from "@humanfs/test";
 
@@ -254,6 +253,245 @@ describe("NodeHfsImpl Customizations", () => {
 				() => impl.write(".hfs/foo", "Hello world!"),
 				/Boom!/,
 			);
+		});
+	});
+
+	describe("copy()", () => {
+		it("should recreate a symlink rather than copy the target file contents", async () => {
+			const tmpDir = await fsp.mkdtemp(
+				path.join(os.tmpdir(), "humanfs-copy-symlink-"),
+			);
+			try {
+				const secret = path.join(tmpDir, "secret.txt");
+				const link = path.join(tmpDir, "link.txt");
+				const dest = path.join(tmpDir, "dest.txt");
+
+				await fsp.writeFile(secret, "TOPSECRET");
+
+				try {
+					await fsp.symlink(secret, link);
+				} catch (err) {
+					if (err.code === "EPERM") {
+						return; // symlinks require elevated privileges on this OS; skip
+					}
+					throw err;
+				}
+
+				const impl = new NodeHfsImpl({ fsp });
+				await impl.copy(link, dest);
+
+				// destination must be a symlink, not a plain file with secret contents
+				const destStat = await fsp.lstat(dest);
+				assert.ok(
+					destStat.isSymbolicLink(),
+					"destination should be a symlink",
+				);
+
+				// the symlink target must point back to the original secret path
+				const linkTarget = await fsp.readlink(dest);
+				assert.strictEqual(linkTarget, secret);
+			} finally {
+				await fsp.rm(tmpDir, { recursive: true });
+			}
+		});
+	});
+
+	describe("copyAll()", () => {
+		it("should recreate symlinks rather than copy target file contents", async () => {
+			const tmpDir = await fsp.mkdtemp(
+				path.join(os.tmpdir(), "humanfs-copyall-symlink-"),
+			);
+			try {
+				const secret = path.join(tmpDir, "secret.txt");
+				const src = path.join(tmpDir, "src");
+				const dst = path.join(tmpDir, "dst");
+
+				await fsp.mkdir(src);
+				await fsp.writeFile(secret, "TOPSECRET");
+
+				try {
+					await fsp.symlink(secret, path.join(src, "link.txt"));
+				} catch (err) {
+					if (err.code === "EPERM") {
+						return; // symlinks require elevated privileges on this OS; skip
+					}
+					throw err;
+				}
+
+				const impl = new NodeHfsImpl({ fsp });
+				await impl.copyAll(src, dst);
+
+				const copiedLink = path.join(dst, "link.txt");
+				const copiedStat = await fsp.lstat(copiedLink);
+
+				// the copied entry must be a symlink, not a plain file
+				assert.ok(
+					copiedStat.isSymbolicLink(),
+					"copied entry should be a symlink",
+				);
+
+				// the symlink must point to the original target, not contain its data
+				const linkTarget = await fsp.readlink(copiedLink);
+				assert.strictEqual(linkTarget, secret);
+			} finally {
+				await fsp.rm(tmpDir, { recursive: true });
+			}
+		});
+	});
+
+	describe("walk()", () => {
+		it("should not throw when a directory is deleted before it is listed", async () => {
+			const tmpDir = await fsp.mkdtemp(
+				path.join(os.tmpdir(), "humanfs-walk-enoent-"),
+			);
+
+			try {
+				const subdir = path.join(tmpDir, "subdir");
+				await fsp.mkdir(subdir);
+				await fsp.writeFile(path.join(subdir, "inside.txt"), "hello");
+				await fsp.writeFile(path.join(tmpDir, "file.txt"), "hello");
+
+				const hfs = new NodeHfs({ fsp });
+				const paths = [];
+
+				for await (const entry of hfs.walk(tmpDir, {
+					// simulate another process deleting the directory after
+					// it was found but before walk() lists its contents
+					async directoryFilter(entry) {
+						if (entry.name === "subdir") {
+							await fsp.rm(subdir, { recursive: true });
+						}
+						return true;
+					},
+				})) {
+					paths.push(entry.path);
+				}
+
+				assert.deepStrictEqual(paths.sort(), ["file.txt", "subdir"]);
+			} finally {
+				await fsp.rm(tmpDir, { recursive: true, force: true });
+			}
+		});
+
+		/**
+		 * Creates a temp directory with this layout:
+		 *
+		 * 	target/inside.txt
+		 * 	dir-link -> target
+		 * 	file-link -> target/inside.txt
+		 * 	broken-link -> missing
+		 *
+		 * @returns {Promise<string|undefined>} The temp directory path, or
+		 * 	undefined if symlinks can't be created on this system.
+		 */
+		async function createSymlinkFixture() {
+			const tmpDir = await fsp.mkdtemp(
+				path.join(os.tmpdir(), "humanfs-walk-symlink-"),
+			);
+			const target = path.join(tmpDir, "target");
+
+			await fsp.mkdir(target);
+			await fsp.writeFile(path.join(target, "inside.txt"), "hello");
+
+			try {
+				await fsp.symlink(target, path.join(tmpDir, "dir-link"));
+				await fsp.symlink(
+					path.join(target, "inside.txt"),
+					path.join(tmpDir, "file-link"),
+				);
+				await fsp.symlink(
+					path.join(tmpDir, "missing"),
+					path.join(tmpDir, "broken-link"),
+				);
+			} catch (err) {
+				if (err.code === "EPERM") {
+					await fsp.rm(tmpDir, { recursive: true, force: true });
+					return undefined; // symlinks require elevated privileges on this OS; skip
+				}
+				throw err;
+			}
+
+			return tmpDir;
+		}
+
+		async function collectPaths(dirPath, options) {
+			const hfs = new NodeHfs({ fsp });
+			const paths = [];
+
+			for await (const entry of hfs.walk(dirPath, options)) {
+				paths.push(entry.path);
+			}
+
+			return paths.sort();
+		}
+
+		it("should not walk into symlinked directories by default", async () => {
+			const tmpDir = await createSymlinkFixture();
+			if (!tmpDir) {
+				return;
+			}
+
+			try {
+				const paths = await collectPaths(tmpDir);
+
+				assert.deepStrictEqual(paths, [
+					"broken-link",
+					"dir-link",
+					"file-link",
+					"target",
+					"target/inside.txt",
+				]);
+			} finally {
+				await fsp.rm(tmpDir, { recursive: true, force: true });
+			}
+		});
+
+		it("should walk into symlinked directories when followSymlinks is true", async () => {
+			const tmpDir = await createSymlinkFixture();
+			if (!tmpDir) {
+				return;
+			}
+
+			try {
+				const paths = await collectPaths(tmpDir, {
+					followSymlinks: true,
+				});
+
+				assert.deepStrictEqual(paths, [
+					"broken-link",
+					"dir-link",
+					"dir-link/inside.txt",
+					"file-link",
+					"target",
+					"target/inside.txt",
+				]);
+			} finally {
+				await fsp.rm(tmpDir, { recursive: true, force: true });
+			}
+		});
+
+		it("should walk into symlinked directories when followSymlinks is true and passed a URL", async () => {
+			const tmpDir = await createSymlinkFixture();
+			if (!tmpDir) {
+				return;
+			}
+
+			try {
+				const paths = await collectPaths(pathToFileURL(tmpDir), {
+					followSymlinks: true,
+				});
+
+				assert.deepStrictEqual(paths, [
+					"broken-link",
+					"dir-link",
+					"dir-link/inside.txt",
+					"file-link",
+					"target",
+					"target/inside.txt",
+				]);
+			} finally {
+				await fsp.rm(tmpDir, { recursive: true, force: true });
+			}
 		});
 	});
 });

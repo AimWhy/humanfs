@@ -1,5 +1,116 @@
 # Changelog
 
+## [0.20.0](https://github.com/humanwhocodes/humanfs/compare/memory-v0.19.6...memory-v0.20.0) (2026-09-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* Require Node.js v24+ and replace WebdriverIO with Vitest ([#168](https://github.com/humanwhocodes/humanfs/issues/168))
+
+### Features
+
+* Require Node.js v24+ and replace WebdriverIO with Vitest ([#168](https://github.com/humanwhocodes/humanfs/issues/168)) ([9d41384](https://github.com/humanwhocodes/humanfs/commit/9d41384c8908b3e416c216061ba4608f907d2d03))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @humanfs/core bumped from ^0.19.2 to ^0.20.0
+    * @humanfs/types bumped from ^0.15.0 to ^0.16.0
+  * devDependencies
+    * @humanfs/test bumped from ^0.15.0 to ^0.16.0
+
+## [0.19.6](https://github.com/humanwhocodes/humanfs/compare/memory-v0.19.5...memory-v0.19.6) (2026-04-17)
+
+
+### Bug Fixes
+
+* Include type dependencies at runtime ([956ce7a](https://github.com/humanwhocodes/humanfs/commit/956ce7aac2a998d0af23b7cb08e7630b69693138)), closes [#145](https://github.com/humanwhocodes/humanfs/issues/145)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @humanfs/core bumped from ^0.19.1 to ^0.19.2
+
+## [0.19.5](https://github.com/humanwhocodes/humanfs/compare/memory-v0.19.4...memory-v0.19.5) (2024-10-18)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @humanfs/core bumped from ^0.19.0 to ^0.19.1
+
+## [0.19.4](https://github.com/humanwhocodes/humanfs/compare/memory-v0.19.3...memory-v0.19.4) (2024-09-09)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @humanfs/core bumped from ^0.18.2 to ^0.19.0
+  * devDependencies
+    * @humanfs/types bumped from ^0.14.0 to ^0.15.0
+
+## [0.19.3](https://github.com/humanwhocodes/humanfs/compare/memory-v0.19.2...memory-v0.19.3) (2024-07-24)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @humanfs/test bumped from ^0.14.1 to ^0.15.0
+
+## [0.19.2](https://github.com/humanwhocodes/humanfs/compare/memory-v0.19.1...memory-v0.19.2) (2024-06-13)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @humanfs/core bumped from ^0.18.1 to ^0.18.2
+
+## [0.19.1](https://github.com/humanwhocodes/humanfs/compare/memory-v0.19.0...memory-v0.19.1) (2024-06-12)
+
+
+### Bug Fixes
+
+* Add main entry to package.json files ([1092847](https://github.com/humanwhocodes/humanfs/commit/1092847563ef1f42e9625b3a98b537694f83ea62))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @humanfs/core bumped from ^0.18.0 to ^0.18.1
+  * devDependencies
+    * @humanfs/test bumped from ^0.14.0 to ^0.14.1
+
+## [0.19.0](https://github.com/humanwhocodes/humanfs/compare/memory-v0.18.0...memory-v0.19.0) (2024-06-12)
+
+
+### Features
+
+* Add ID-based methods to MemoryHfsVolume + tests ([#114](https://github.com/humanwhocodes/humanfs/issues/114)) ([bb7045e](https://github.com/humanwhocodes/humanfs/commit/bb7045e7c277928d1d6fd78d687c14e8d801e690))
+* Expose MemoryHfsVolume, add copyObject and moveObject ([#116](https://github.com/humanwhocodes/humanfs/issues/116)) ([ad00da4](https://github.com/humanwhocodes/humanfs/commit/ad00da42d4a34dacbc6cb429b3f82c4e10baae67))
+
+
+### Bug Fixes
+
+* Don't expose MemoryHfsVolume (yet) ([8ed5e2f](https://github.com/humanwhocodes/humanfs/commit/8ed5e2f7a459e937b9bb1967eee25b4c400f6e9d))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @humanfs/core bumped from ^0.17.0 to ^0.18.0
+  * devDependencies
+    * @humanfs/types bumped from ^0.13.0 to ^0.14.0
+
 ## [0.18.0](https://github.com/humanwhocodes/humanfs/compare/memory-v0.17.1...memory-v0.18.0) (2024-03-20)
 
 

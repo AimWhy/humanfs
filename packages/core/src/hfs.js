@@ -3,14 +3,13 @@
  * @author Nicholas C. Zakas
  */
 
-/* global URL, TextDecoder, TextEncoder */
-
 //-----------------------------------------------------------------------------
 // Types
 //-----------------------------------------------------------------------------
 
-/** @typedef{import("@humanfs/types").HfsImpl} HfsImpl */
-/** @typedef{import("@humanfs/types").HfsDirectoryEntry} HfsDirectoryEntry */
+/** @typedef {import("@humanfs/types").HfsImpl} HfsImpl */
+/** @typedef {import("@humanfs/types").HfsDirectoryEntry} HfsDirectoryEntry */
+/** @typedef {import("@humanfs/types").HfsWalkEntry} HfsWalkEntry */
 
 //-----------------------------------------------------------------------------
 // Helpers
@@ -511,6 +510,180 @@ export class Hfs {
 	async *list(dirPath) {
 		assertValidFileOrDirPath(dirPath);
 		yield* await this.#callImplMethod("list", dirPath);
+	}
+
+	/**
+	 * Walks a directory using a depth-first traversal and returns the entries
+	 * from the traversal.
+	 * @param {string|URL} dirPath The path to the directory to walk.
+	 * @param {Object} [options] The options for the walk.
+	 * @param {(entry:HfsWalkEntry) => Promise<boolean>|boolean} [options.directoryFilter] A filter function to determine
+	 * 	if a directory's entries should be included in the walk.
+	 * @param {(entry:HfsWalkEntry) => Promise<boolean>|boolean} [options.entryFilter] A filter function to determine if
+	 * 	an entry should be included in the walk.
+	 * @param {boolean} [options.followSymlinks] When `true`, symbolic links that
+	 * 	point to directories are walked as if they were directories. Defaults
+	 * 	to `false`. No protection against circular symbolic links is provided.
+	 * @returns {AsyncIterable<HfsWalkEntry>} A promise that resolves with the
+	 * 	directory entries.
+	 * @throws {TypeError} If the directory path is not a string or URL.
+	 * @throws {Error} If the directory cannot be read.
+	 */
+	async *walk(
+		dirPath,
+		{
+			directoryFilter = () => true,
+			entryFilter = () => true,
+			followSymlinks = false,
+		} = {},
+	) {
+		assertValidFileOrDirPath(dirPath);
+		this.#log("walk", dirPath, {
+			directoryFilter,
+			entryFilter,
+			followSymlinks,
+		});
+
+		// inner function for recursion without additional logging
+		const walk = async function* (
+			dirPath,
+			{
+				directoryFilter,
+				entryFilter,
+				followSymlinks,
+				parentPath = "",
+				depth = 1,
+			},
+		) {
+			let dirEntries;
+
+			try {
+				dirEntries = await this.#callImplMethodWithoutLog(
+					"list",
+					dirPath,
+				);
+			} catch (error) {
+				// if the directory does not exist then return an empty array
+				if (error.code === "ENOENT") {
+					return;
+				}
+
+				// otherwise, rethrow the error
+				throw error;
+			}
+
+			/*
+			 * list() is usually an async generator, which means the directory
+			 * isn't actually read until the iterator is first advanced. That
+			 * means an ENOENT error (e.g., the directory was deleted after the
+			 * parent was listed) is thrown by next() rather than by the call
+			 * to list() itself, so it must be caught here as well.
+			 */
+			const iterator =
+				dirEntries[Symbol.asyncIterator]?.() ??
+				dirEntries[Symbol.iterator]();
+			let done = false;
+
+			try {
+				while (!done) {
+					let result;
+
+					try {
+						result = await iterator.next();
+					} catch (error) {
+						// if the directory does not exist then stop walking it
+						if (error.code === "ENOENT") {
+							return;
+						}
+
+						// otherwise, rethrow the error
+						throw error;
+					}
+
+					if (result.done) {
+						done = true;
+						break;
+					}
+
+					const listEntry = result.value;
+					const walkEntry = {
+						path: listEntry.name,
+						depth,
+						...listEntry,
+					};
+
+					if (parentPath) {
+						walkEntry.path = `${parentPath}/${walkEntry.path}`;
+					}
+
+					// first emit the entry but only if the entry filter returns true
+					let shouldEmitEntry = entryFilter(walkEntry);
+					if (shouldEmitEntry.then) {
+						shouldEmitEntry = await shouldEmitEntry;
+					}
+
+					if (shouldEmitEntry) {
+						yield walkEntry;
+					}
+
+					// make sure there's a trailing slash on the directory path before appending
+					const entryPath =
+						dirPath instanceof URL
+							? new URL(
+									listEntry.name,
+									dirPath.href.endsWith("/")
+										? dirPath.href
+										: `${dirPath.href}/`,
+								)
+							: `${dirPath.endsWith("/") ? dirPath : `${dirPath}/`}${listEntry.name}`;
+
+					// directories are always walked; symlinks to directories are
+					// only walked when followSymlinks is true (a symlink reports
+					// isDirectory as false, so the target must be checked)
+					let shouldWalkDirectory = listEntry.isDirectory;
+
+					if (
+						!shouldWalkDirectory &&
+						followSymlinks &&
+						listEntry.isSymlink
+					) {
+						shouldWalkDirectory =
+							await this.#callImplMethodWithoutLog(
+								"isDirectory",
+								entryPath,
+							);
+					}
+
+					// if it's a directory then walk the directory
+					if (shouldWalkDirectory) {
+						// if the directory filter returns false, skip the directory
+						shouldWalkDirectory = directoryFilter(walkEntry);
+						if (shouldWalkDirectory.then) {
+							shouldWalkDirectory = await shouldWalkDirectory;
+						}
+
+						if (!shouldWalkDirectory) {
+							continue;
+						}
+
+						yield* walk(entryPath, {
+							directoryFilter,
+							entryFilter,
+							followSymlinks,
+							parentPath: walkEntry.path,
+							depth: depth + 1,
+						});
+					}
+				}
+			} finally {
+				// close the iterator if the loop exited early (error or break)
+				if (!done) {
+					await iterator.return?.();
+				}
+			}
+		}.bind(this);
+
+		yield* walk(dirPath, { directoryFilter, entryFilter, followSymlinks });
 	}
 
 	/**

@@ -1,8 +1,9 @@
 {
   "name": "@humanfs/node",
-  "version": "0.16.0",
+  "version": "0.17.0",
   "description": "The Node.js bindings of the humanfs library.",
   "type": "module",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
     "import": {
@@ -22,7 +23,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/humanwhocodes/humanfs.git"
+    "url": "git+https://github.com/humanwhocodes/humanfs.git",
+    "directory": "packages/node"
   },
   "publishConfig": {
     "access": "public"
@@ -40,17 +42,17 @@
   },
   "homepage": "https://github.com/humanwhocodes/humanfs#readme",
   "engines": {
-    "node": ">=18.18.0"
+    "node": ">=24.0.0"
   },
   "devDependencies": {
-    "@types/node": "^20.9.4",
-    "@humanfs/test": "^0.14.0",
-    "@humanfs/types": "^0.13.0",
+    "@types/node": "^24.0.0",
+    "@humanfs/test": "^0.16.0",
     "mocha": "^10.2.0",
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "@humanwhocodes/retry": "^0.1.2",
-    "@humanfs/core": "^0.17.0"
+    "@humanwhocodes/retry": "^0.4.0",
+    "@humanfs/core": "^0.20.0",
+    "@humanfs/types": "^0.16.0"
   }
 }
